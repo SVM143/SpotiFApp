@@ -1,28 +1,12 @@
 import React, { Component } from "react";
 import { FlatList, TouchableOpacity, Text, StyleSheet, View } from 'react-native';
-import { Badge } from 'native-base';
 import { Actions } from "react-native-router-flux";
-
+import {getNewRelease} from '../ApiFetch/accountActions'
+import { connect } from "react-redux";
 class TrendingHashTags extends Component {
-  state = {
-    trendingHashTags: ['#blockchain','#technology','#bollywood','#hollywood','#robots']
-  };
-
-  randomColorArray = [
-    '#E67E22', '#8E44AD', '#E74C3C', '#27AE60', '#3498DB'
-  ];
-
-  /**
-   * Fetch all the Trending hashtags from the
-   * server on the mounting of the component
-  */
-  /**
-   * Recieve all the trending hashtags and render it in the component
-   */
-
-  /**
-   * Navigate to the hashtag
-   */
+  componentDidMount(){
+    this.props.getNewRelease()
+  }
   loadTrendingHashTagMurmur = (item) => {
     Actions.HashTag({
       hashTag: item.split("#")[1],
@@ -47,24 +31,23 @@ class TrendingHashTags extends Component {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item, index) => item._id + index.toString()}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => this.loadTrendingHashTagMurmur(item)}
-            >
-              <Badge style={styles.badgeStyle}>
-                <Text style={[styles.textStyle, { color: this.getRandomColor() }]}>
-                  {item}
-                </Text>
-              </Badge>
-            </TouchableOpacity>
-          )
-         }
+        //   renderItem={({ item }) => (
+        //     <TouchableOpacity
+        //       onPress={() => this.loadTrendingHashTagMurmur(item)}
+        //     >
+        //       <Badge style={styles.badgeStyle}>
+        //         <Text style={[styles.textStyle, { color: this.getRandomColor() }]}>
+        //           {item}
+        //         </Text>
+        //       </Badge>
+        //     </TouchableOpacity>
+        //   )
+        //  }
         />
       </View>
     );
   };
 };
-
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F2F2F4',
@@ -87,4 +70,15 @@ const styles = StyleSheet.create({
   }
 });
 
-export default TrendingHashTags;
+const mapDispatchToProps = dispatch => {
+  return {
+    getNewRelease: () =>{
+      dispatch(getNewRelease());
+    },
+  }
+};
+export default connect(
+  null,
+  mapDispatchToProps
+)(TrendingHashTags);
+

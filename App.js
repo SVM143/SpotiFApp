@@ -12,7 +12,7 @@ import {
   StatusBar 
 } from 'react-native';
 
-import { connect, Provider } from "react-redux";
+import {Provider } from "react-redux";
 import Routes from './src/components/Router';
 import Store from './src/utils/store'
 // import { Actions, Router, Scene } from "react-native-router-flux";

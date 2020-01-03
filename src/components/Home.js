@@ -2,8 +2,7 @@ import React from "react";
 import { Body, Container, Drawer, Header, Icon, Left, Right, Tab, TabHeading, Tabs, Text, Button } from "native-base";
 import { BackHandler, Image, StatusBar, ToastAndroid, TouchableOpacity, View, StyleSheet } from "react-native";
 import { Actions } from "react-native-router-flux";
-import Profile from "./Profile";
-import TrendingHashtags from "./TrendingHashTags";
+// import TrendingHashtags from "./TrendingHashTags";
 
 var backButtonPressedOnceToExit = false;
 import Timeline from './Timeline'
@@ -11,13 +10,6 @@ import Timeline from './Timeline'
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    const drawer = Drawer;
-    this.state = {
-      openReportMurmurModal:false,
-      scrollTopTab: false,
-      showToast: false,
-      currentTab: 0
-    };
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
   }
 
@@ -51,18 +43,6 @@ class Home extends React.Component {
   };
   render() {
     return (
-      // <Drawer
-      //   ref={ref => {
-      //     this.drawer = ref;
-      //   }}
-      //   content={
-      //     <Profile navigator={this.navigator} closeDrawer={this.closeDrawer} />
-      //   }
-      //   onClose={() => this.closeDrawer()}
-      //   panOpenMask={0.25}
-      //   openDrawerOffset={0.15}
-      //   tapToClose={false}
-      // >
         <Container>
           <Header style={{ backgroundColor: "#455a64", height: 40 }}>
             <StatusBar
@@ -88,10 +68,9 @@ class Home extends React.Component {
               </TouchableOpacity>
             </Right>
           </Header>
-          <TrendingHashtags/>
+          {/* <TrendingHashtags/> */}
           <Timeline screen="home"/>
         </Container>
-      // </Drawer>
     );
   }
 }

@@ -1,10 +1,10 @@
 let account = {
   timeLineFeed: [],
   categoryList:[],
-  playList:[]
+  playList:[],
+  recommendation:[]
 };
 const accountReducer = (state = account, action) => {
-  console.log("actions",action.payload)
   switch (action.type) {
     case "NEWS_FEED":
       state = {
@@ -15,15 +15,21 @@ const accountReducer = (state = account, action) => {
     case "LIST_CAT":
       state = {
         ...state,
-        categoryList:state.categoryList.concat(action.payload)
+        categoryList:!action.payload?[]:state.categoryList.concat(action.payload)
       };
       break;
     case "PLAYLIST":
       state = {
         ...state,
-        playList:state.playList.concat(action.payload)
+        playList:!action.payload?[]:state.playList.concat(action.payload)
       };
       break;
+    case "RECOMMENDATION":
+      state = {
+        ...state,
+        recommendation:action.payload
+      };
+        break;
     default:
   }
   return state;

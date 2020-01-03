@@ -2,14 +2,12 @@ import {Body, CardItem } from "native-base";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import renderIf from "./renderif";
-import { openCustomTab } from '../../utils/CustomTabs';
 import FastImage from "react-native-fast-image";
 import {Constants} from "../../utils/constants"
 import { Actions } from "react-native-router-flux";
 export class NewsPreview extends React.Component {
     constructor(props) {
         super(props)
-        console.log("input props",props);
         this.state={
           url: (this.props.previewLink.icons 
                 && 
@@ -60,7 +58,7 @@ export class NewsPreview extends React.Component {
                     onPress={() => {
                         Actions.HashTag({
                           hashTag: this.props.previewLink.id,
-                          screen: 'hashtag',
+                          screen: this.props.screen == 'hashtag'?'playList':'hashtag',
                           headerName: this.props.previewLink.name.trim()
                         })
                     }}

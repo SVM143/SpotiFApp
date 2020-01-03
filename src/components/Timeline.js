@@ -2,7 +2,8 @@ import { Container } from "native-base";
 import React, { Component } from "react";
 import {FlatList, View , ActivityIndicator,StyleSheet ,  Text } from "react-native";
 import {NewsPreview} from "./sharedComponents/NewsPreview"
-import {getNews,getLikes,getBookMarks,getProfile,getCategoriesList,getPlayList} from "../ApiFetch/accountActions"
+import {ArtistPreivew} from "./sharedComponents/ArtistPreview"
+import {getNews,getCategoriesList,getPlayList} from "../ApiFetch/accountActions"
 import {connect} from "react-redux";
 
 class Timeline extends Component {
@@ -22,29 +23,29 @@ class Timeline extends Component {
     else if(this.props.screen == "hashtag")
         this.props.getCategoriesList(this.props.hashTag);
     else 
-        this.props.getPlayList();
+        this.props.getPlayList(this.props.hashTag);
   }
 
   lazyLoading(){
     if(this.props.screen == "home") 
-    this.props.getNews(this.offset+1);
+    this.props.getNews(this.state.offset+1);
     else if(this.props.screen == "hashtag")
-    this.props.getCategoriesList(this.props.hashTag,this.offset+1);
+    this.props.getCategoriesList(this.props.hashTag,this.state.offset+1);
     else 
-    this.props.getPlayList(id,this.offset+1);
-    this.setState({offset:this.offset+1})
+    this.props.getPlayList(this.props.hashTag,this.state.offset+1);
+    this.setState({offset:this.state.offset+1})
   }
-  // componentWillReceiveProps(props){
-  //   this.getData(props);
+  componentWillReceiveProps(props){
+    this.getData(props);
+  }
+  // static getDerivedStateFromProps(props, prevState) {
+  // if(props.screen == "home" && props.timeLineFeed)
+  // return {loader:true,data:props.timeLineFeed}
+  // else if(props.screen == "hashtag" && props.categoryList)
+  // return {loader:true,data:props.categoryList}
+  // else 
+  // return {loader:true,data:props.playList}
   // }
-  static getDerivedStateFromProps(props, prevState) {
-  if(props.screen == "home" && props.timeLineFeed)
-  return {loader:true,data:props.timeLineFeed}
-  else if(props.screen == "hashtag" && props.categoryList)
-  return {loader:true,data:props.categoryList}
-  else 
-  return {loader:true,data:props.profileData}
-  }
 
   onRefresh() {
     this.setState({ refreshing: true, offset: 0 });
@@ -55,17 +56,15 @@ class Timeline extends Component {
   getData(props){
   if(props.screen == "home" && props.timeLineFeed)
       this.setState({loader:true,data:props.timeLineFeed})
-  else if(props.screen == "like" && props.likedData)
-      this.setState({loader:true,data:props.likedData})
-  else if(props.screen == "bookMark" && props.bookMarkData)
-      this.setState({loader:true,data:props.bookMarkData})
-  else if(props.screen == "hashtag" && props.hashTagFeed)
-      this.setState({loader:true,data:props.hashTagFeed})
+  else if(props.screen == "hashtag" && props.categoryList)
+      this.setState({loader:true,data:props.categoryList})
   else 
-      this.setState({loader:true,data:props.profileData})
+      this.setState({loader:true,data:props.playList})
   }
   renderItem = ({ item, index }) => (
-   <NewsPreview previewLink={item} />
+    this.props.screen == "playList"?
+    <ArtistPreivew previewLink={item.track} screen={this.props.screen} />:
+    <NewsPreview previewLink={item} screen={this.props.screen} />
   );
 
   renderSeparator = () => {
@@ -74,8 +73,6 @@ class Timeline extends Component {
         style={{
           height: 12,
           width: "86%",
-          // backgroundColor: "#CED0CE",
-          // marginLeft: "14%"
         }}
       />
     );
@@ -84,7 +81,7 @@ class Timeline extends Component {
   render() {
     return (
       <Container style={{ backgroundColor: "#f2f2f4", paddingTop: 0 }}>
-        <View style={{ paddingTop: 0, flex: 1 }}>
+        <View style={{ paddingTop: 10, flex: 1 }}>
           {this.state.loader?
             <FlatList
               showsVerticalScrollIndicator={false}
@@ -144,7 +141,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateToProps = (state) => {
-  console.log("state",state)
   return {
     timeLineFeed: state.accountData.timeLineFeed,
     playList:state.accountData.playList,

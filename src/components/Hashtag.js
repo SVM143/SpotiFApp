@@ -29,27 +29,33 @@ import {
   Card,
   CardItem,
   // Thumbnail,
-  View
+  View,
+  Footer
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import TimeLine from "./Timeline";
 import {clearGetPlayList,clearGetCategoriesList} from '../ApiFetch/accountActions'
+import { connect } from "react-redux";
 class HashTag extends React.Component {
   constructor(props) {
     super(props);
-    console.log("487030473",props);
     this.state = {
     };
   }
+  back=()=>{
+    this.props.screen == "playList"?
+    this.props.clearGetPlayList():
+    this.props.clearGetCategoriesList()
+    Actions.pop()
+  }
   render() {
-
       return (
-        <Container style={{ flex: 1, backgroundColor: "#f2f2f4" }}>
+        <Container style={{  backgroundColor: "#f2f2f4" }}>
           <Header style={{ backgroundColor: "#455a64" }}>
             <StatusBar backgroundColor="#455a64" barStyle="light-content" />
             <View style={{flex:1,flexDirection:"row",}}>
             <View style={{flex:0.1}}>
-                <Button transparent style={{alignContent:"flex-start"}}onPress={() => Actions.pop()}>
+                <Button transparent style={{alignContent:"flex-start"}}onPress={() => this.back()}>
                     <Image source={require('../assets/images/back-arrow.png')} resizeMode="contain" style={{ width: 25, height: 25 }} />
                 </Button>
             </View>
@@ -60,9 +66,9 @@ class HashTag extends React.Component {
             </View>
           </View>
           </Header>
-          <Content>
-            <TimeLine screen="hashtag" hashTag={this.props.hashTag}/>
-          </Content>
+          <View style={{ paddingTop: 0, flex: 1 }}>
+            <TimeLine screen={this.props.screen} hashTag={this.props.hashTag}/>
+          </View>
         </Container>
       )
   }
@@ -72,21 +78,12 @@ const mapDispatchToProps = dispatch => {
    clearGetPlayList: () =>{
       dispatch(clearGetPlayList());
     },
-  clearGetCategoriesListL:()=>{
-    dispatch(clearGetCategoriesListL())
+  clearGetCategoriesList  :()=>{
+    dispatch(clearGetCategoriesList())
    } 
   }
 };
-
-const mapStateToProps = (state) => {
-  console.log("state",state)
-  return {
-    timeLineFeed: state.accountData.timeLineFeed,
-    playList:state.accountData.playList,
-    categoryList:state.accountData.categoryList
-  };
-}
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(HashTag);

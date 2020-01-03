@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import {Router, Stack, Scene} from 'react-native-router-flux';
 import { connect } from "react-redux";
-
-import Login from './LoginPages/Login';
 import Home from "./Home"
-import ProfileUpload from "../components/ProfileUpload"
 import Splash from './splash'
 import HashTag from './Hashtag';
 
@@ -13,9 +10,7 @@ class Routes extends Component {
 		return(
 			<Router>
 			    <Stack key="root" hideNavBar={true}>
-			       <Scene key="login" component={Login} title="Login" />
 				   <Scene key="Home" component={Home}  hideNavBar/>
-				   <Scene key="ProfileUpload" component={ProfileUpload} hideNavBar />
 				   <Scene key="Splash" component={Splash} hideNavBar initial={true} />
 				   <Scene key="HashTag" component={HashTag} hideNavBar />
 			    </Stack>
